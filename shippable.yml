@@ -24,3 +24,5 @@ script:
 notifications:
   email:
    - varsha@shippable.com
+   
+archive: true
