@@ -30,4 +30,4 @@ notifications:
    
 archive: true
 
-#cache: true
+cache: true
