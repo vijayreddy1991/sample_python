@@ -26,7 +26,8 @@ branches:
   - TEST
 
 notifications:
-  email: false
+  email:
+    varsha@shippable.com
    
 archive: true
 
