@@ -20,8 +20,14 @@ script:
   - which python
   - coverage run `which nosetests` test.py --with-xunit --xunit-file=shippable/testresults/nosetests.xml
   - coverage xml -o shippable/codecoverage/coverage.xml
+  # exclude
+branches:
+  only:
+  - TEST
 
 notifications:
   email: false
    
 archive: true
+
+#cache: true
