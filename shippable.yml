@@ -5,7 +5,7 @@ python:
  # - 2.7
  # - 3.2
  # - 3.3
-  - 3.4
+ # - 3.4
   - pypy
  # - pypy3
 
@@ -17,3 +17,4 @@ build:
     - which python
     - coverage run `which nosetests` test.py --with-xunit --xunit-file=shippable/testresults/nosetests.xml
     - coverage xml -o shippable/codecoverage/coverage.xml
+    - sleep 2m
