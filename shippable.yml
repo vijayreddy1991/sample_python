@@ -1,5 +1,8 @@
 language: python
 
+runtime:
+  nodePool: testu16
+  
 python:
  # - 2.6 
  # - 2.7
