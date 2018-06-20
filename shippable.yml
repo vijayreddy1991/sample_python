@@ -24,7 +24,7 @@ build:
     - docker --version
     - docker info
     - docker ps 
-    - sleep 77m
+    #- sleep 3m
 
 integrations:    
   notifications:
