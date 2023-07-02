@@ -9,5 +9,5 @@ pipelines:
       configuration:
         jenkinsJobName: testvarsha
         integrations:
-          - name: jenkins_entplus_ci
+          - name: S_B_Jenkins
 
