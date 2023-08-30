@@ -1,13 +1,13 @@
 
 
-pipelines:
-  - name: jenkins_varsha
-    steps:
+# pipelines:
+#   - name: jenkins_varsha
+#     steps:
        
-    - name: jfrog_jenkins_pipelines
-      type: Jenkins
-      configuration:
-        jenkinsJobName: testvarsha
-        integrations:
-          - name: S_B_Jenkins
+#     - name: jfrog_jenkins_pipelines
+#       type: Jenkins
+#       configuration:
+#         jenkinsJobName: testvarsha
+#         integrations:
+#           - name: S_B_Jenkins
 
