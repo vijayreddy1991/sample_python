@@ -1,0 +1,95 @@
+resources:
+  - name: S_PS_DockerBuild_4748_002_GitRepo
+    type: GitRepo
+    configuration:
+      gitProvider: vijay_github
+      path: vijayreddy1991/sample_python
+      branches:
+        include: {{gitBranch}}
+
+  - name: S_PS_DockerBuild_4748_002_FileSpec_1
+    type: FileSpec
+    configuration:
+      sourceArtifactory: s_artifactory
+      pattern: DockerBuild_4748_002_Dockerfile
+
+  - name: S_PS_DockerBuild_4748_002_FileSpec_2
+    type: FileSpec
+    configuration:
+      sourceArtifactory: s_artifactory
+      pattern: DockerBuild_4748_002_mySecondFile
+
+pipelines:
+  - name: pipeline_S_PS_DockerBuild_4748_002_1
+    configuration:
+      runtime:       
+        type: image
+        image:
+          custom:
+            name: jfpip.jfrog.io/jfrog/pipelines-w19node
+            tag: 18.17.0-13710
+            registry: bsEntPlus
+      nodePool: win_2019
+      jfrogCliVersion: 2
+    steps:
+      - name: S_PS_DockerBuild_4748_002_1
+        type: PowerShell
+        configuration:
+          integrations:
+            - name: s_artifactory
+          outputResources:
+            - name: S_PS_DockerBuild_4748_002_FileSpec_1
+            - name: S_PS_DockerBuild_4748_002_FileSpec_2
+        execution:
+          onExecute:
+            - |
+              $artifactory_url = [System.Uri]$int_s_artifactory_url
+              $artifactory_registry_host = $artifactory_url.Host
+              $artifactory_registry_port = $artifactory_url.Port
+              if (($artifactory_registry_port -eq 80) -or ($artifactory_registry_port -eq 443)) {
+                add_run_variables artifactory_registry_url="${artifactory_registry_host}"
+              } else {
+                add_run_variables artifactory_registry_url="${artifactory_registry_host}:${artifactory_registry_port}"
+              }
+            - Set-Content -Path Dockerfile -Value "FROM $(${step_image_name}):$(${step_image_tag})"
+            - Add-Content -Path Dockerfile -Value "ADD PS_DockerBuild_4748_002_mySecondFile c:\\temp\\"
+            - Set-Content -Path mySecondFile -Value "My Other File"
+            - jfrog rt upload Dockerfile test-automation-generic-local/PS_DockerBuild_4748_002_Dockerfile
+            - jfrog rt upload mySecondFile test-automation-generic-local/PS_DockerBuild_4748_002_mySecondFile
+            - write_output S_PS_DockerBuild_4748_002_FileSpec_1 pattern=test-automation-generic-local/PS_DockerBuild_4748_002_Dockerfile
+            - write_output S_PS_DockerBuild_4748_002_FileSpec_2 pattern=test-automation-generic-local/PS_DockerBuild_4748_002_mySecondFile
+
+  - name: pipeline_S_PS_DockerBuild_4748_002_2
+    configuration:
+      nodePool: win_2019
+      inputResources:
+        - name: S_PS_DockerBuild_4748_002_FileSpec_2
+    steps:
+      - name: S_PS_DockerBuild_4748_002_2
+        type: DockerBuild
+        configuration:
+          affinityGroup: S_PS_DockerBuild_4748_002
+          dockerImageName: ${artifactory_registry_url}/test-automation-docker-local/s_ps_dockerbuild_4748
+          dockerImageTag: "${run_id}"
+          dockerFileName: PS_DockerBuild_4748_002_Dockerfile
+          inputResources:
+            - name: S_PS_DockerBuild_4748_002_GitRepo
+              trigger: false
+            - name: S_PS_DockerBuild_4748_002_FileSpec_1
+              trigger: false
+          integrations:
+            - name: s_artifactory
+            - name: s_rt_dockerRegistry
+        execution:
+          onStart:
+            - |
+              $artifactory_url = [System.Uri]$int_s_artifactory_url
+              $artifactory_registry_host = $artifactory_url.Host
+              $artifactory_registry_port = $artifactory_url.Port
+              if (($artifactory_registry_port -eq 80) -or ($artifactory_registry_port -eq 443)) {
+                add_run_variables artifactory_registry_url="${artifactory_registry_host}"
+              } else {
+                add_run_variables artifactory_registry_url="${artifactory_registry_host}:${artifactory_registry_port}"
+              }
+          onComplete:
+            - docker rmi "${artifactory_registry_url}/test-automation-docker-local/s_ps_dockerbuild_4748:${run_id}"
