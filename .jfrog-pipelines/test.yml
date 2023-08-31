@@ -28,7 +28,7 @@ pipelines:
       #     custom:
       #       name: jfpip.jfrog.io/jfrog/pipelines-w19node
       #       tag: 18.17.0-13710
-            registry: bsEntPlus
+            # registry: bsEntPlus
       nodePool: win_2019
       jfrogCliVersion: 2
     steps:
