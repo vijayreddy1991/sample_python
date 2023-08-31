@@ -22,12 +22,12 @@ resources:
 pipelines:
   - name: pipeline_S_PS_DockerBuild_4748_002_1
     configuration:
-      runtime:       
-        type: image
-        image:
-          custom:
-            name: jfpip.jfrog.io/jfrog/pipelines-w19node
-            tag: 18.17.0-13710
+      # runtime:       
+      #   type: image
+      #   image:
+      #     custom:
+      #       name: jfpip.jfrog.io/jfrog/pipelines-w19node
+      #       tag: 18.17.0-13710
             registry: bsEntPlus
       nodePool: win_2019
       jfrogCliVersion: 2
