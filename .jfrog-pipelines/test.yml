@@ -26,7 +26,6 @@ pipelines:
         type: image
         image:
           custom:
-            autoPull: "true"
             name: releases-docker.jfrog.io/jfrog/pipelines-w19dotnet
             tag: 6
       nodePool: win_2019
