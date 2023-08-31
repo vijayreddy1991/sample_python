@@ -27,7 +27,7 @@ pipelines:
         image:
           custom:
             name: releases-docker.jfrog.io/jfrog/pipelines-w19dotnet
-            tag: 6
+            tag: "6"
       nodePool: win_2019
       jfrogCliVersion: 2
     steps:
