@@ -80,7 +80,6 @@ pipelines:
               trigger: false
           integrations:
             - name: s_artifactory
-            - name: s_rt_dockerRegistry
         execution:
           onStart:
             - |
