@@ -1,5 +1,5 @@
 resources:
-  - name: S_PS_DockerBuild_4748_002_GitRepo
+  - name: S_PS_DockerBuild_4748_002_GitRepo_vijay
     type: GitRepo
     configuration:
       gitProvider: vijay_github
@@ -7,13 +7,13 @@ resources:
       branches:
         include: {{gitBranch}}
 
-  - name: S_PS_DockerBuild_4748_002_FileSpec_1
+  - name: S_PS_DockerBuild_4748_002_FileSpec_1_vijay
     type: FileSpec
     configuration:
       sourceArtifactory: s_artifactory
       pattern: DockerBuild_4748_002_Dockerfile
 
-  - name: S_PS_DockerBuild_4748_002_FileSpec_2
+  - name: S_PS_DockerBuild_4748_002_FileSpec_2_vijay
     type: FileSpec
     configuration:
       sourceArtifactory: s_artifactory
@@ -21,7 +21,7 @@ resources:
 
 
 pipelines:
-  - name: pipeline_S_PS_DockerBuild_4748_002_1
+  - name: pipeline_S_PS_DockerBuild_4748_002_1_vijay
     configuration:
       runtime:       
         type: image
@@ -33,14 +33,14 @@ pipelines:
       nodePool: win_2019
       jfrogCliVersion: 2
     steps:
-      - name: S_PS_DockerBuild_4748_002_1
+      - name: S_PS_DockerBuild_4748_002_1_vijay
         type: PowerShell
         configuration:
           integrations:
             - name: s_artifactory
           outputResources:
-            - name: S_PS_DockerBuild_4748_002_FileSpec_1
-            - name: S_PS_DockerBuild_4748_002_FileSpec_2
+            - name: S_PS_DockerBuild_4748_002_FileSpec_1_vijay
+            - name: S_PS_DockerBuild_4748_002_FileSpec_2_vijay
         execution:
           onExecute:
             - |
@@ -60,23 +60,23 @@ pipelines:
             - write_output S_PS_DockerBuild_4748_002_FileSpec_1 pattern=test-automation-generic-local/PS_DockerBuild_4748_002_Dockerfile
             - write_output S_PS_DockerBuild_4748_002_FileSpec_2 pattern=test-automation-generic-local/PS_DockerBuild_4748_002_mySecondFile
 
-  - name: pipeline_S_PS_DockerBuild_4748_002_2
+  - name: pipeline_S_PS_DockerBuild_4748_002_2_vijay
     configuration:
       nodePool: win_2019
       inputResources:
-        - name: S_PS_DockerBuild_4748_002_FileSpec_2
+        - name: S_PS_DockerBuild_4748_002_FileSpec_2_vijay
     steps:
-      - name: S_PS_DockerBuild_4748_002_2
+      - name: S_PS_DockerBuild_4748_002_2_vijay
         type: DockerBuild
         configuration:
-          affinityGroup: S_PS_DockerBuild_4748_002
+          affinityGroup: S_PS_DockerBuild_4748_002_vijay
           dockerImageName: ${artifactory_registry_url}/test-automation-docker-local/s_ps_dockerbuild_4748
           dockerImageTag: "${run_id}"
           dockerFileName: PS_DockerBuild_4748_002_Dockerfile
           inputResources:
-            - name: S_PS_DockerBuild_4748_002_GitRepo
+            - name: S_PS_DockerBuild_4748_002_GitRepo_vijay
               trigger: false
-            - name: S_PS_DockerBuild_4748_002_FileSpec_1
+            - name: S_PS_DockerBuild_4748_002_FileSpec_1_vijay
               trigger: false
           integrations:
             - name: s_artifactory
