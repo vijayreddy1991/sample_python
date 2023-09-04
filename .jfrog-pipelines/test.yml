@@ -19,6 +19,7 @@ resources:
       sourceArtifactory: s_artifactory
       pattern: DockerBuild_4748_002_mySecondFile
 
+
 pipelines:
   - name: pipeline_S_PS_DockerBuild_4748_002_1
     configuration:
